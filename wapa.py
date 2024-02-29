@@ -210,6 +210,7 @@ def generate_event():
     event = random.choice(list(event_dict.keys()))
     # if the event is an enemy
     if event == 'enemy':
+        print(f'You found an enemy with {event_dict["enemy"]} HP')
         # the player fights the enemy
         player_hp = fight_enemy(player_hp)
     # if the event is a weapon
@@ -249,6 +250,8 @@ def fight_enemy(event):
         if player_hp > event_dict['enemy']:
             # the player wins and gets the enemy's HP
             player_hp += event_dict['enemy']
+            print(f'Congratulations! You defeated the enemy!')
+            print
             boss_hp += event_dict['enemy']
         # if the player has the same HP than the enemy
         elif player_hp == event_dict['enemy']:
