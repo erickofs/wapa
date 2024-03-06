@@ -62,48 +62,46 @@ boss_hp = 0
 
 
 def main():
-    # Main function
-    # The game starts with the first stage
-    stage = 1
-    # The game starts with the first board
-    board = [[0 for x in range(5)] for y in range(5)]
+    # The board has a 5x5 grid
+    board_x = [0,1,2,3,4]
+    board_y = [0,1,2,3,4]
     # The player starts with 1 HP
     player_hp = 1
     # The player starts with no weapon
     player_weapon = 0
     # The player starts with no armor
     player_armor = 0
-    # The player starts at position 0,0
-    player_position = [0,0]
+    # The player starts at position 0, of board
+    player_position = [board_x[0], board_y[0]]
     # Input to start the game
     print('You are a warrior and you have to defeat the enemies to get to the boss')
     print('You are at the top left corner of the board')
-    input('choose a direction: 1 - right, 2 - down, 3 - downright')
+    m_input = input('choose a direction: 1 - right, 2 - down, 3 - downright: ')
     # If the player chooses to go right
-    if input == 1:
+    if m_input == 1:
         # the player goes right
         player_position[1] += 1
         # generate a random event
         generate_event()
         # call the movement function
-        movement(player_position)
+        return movement(player_position)
     # If the player chooses to go down
-    elif input == 2:
+    elif m_input == 2:
         # the player goes down
         player_position[0] += 1
         # generate a random event
         generate_event()
         # call the movement function
-        movement(player_position)
+        return movement(player_position)
     # If the player chooses to go downright
-    elif input == 3:
+    elif m_input == 3:
         # the player goes downright
         player_position[0] += 1
         player_position[1] += 1
         # generate a random event
         generate_event()
         # call the movement function
-        movement(player_position)
+    return movement(player_position)
                 
 
 
@@ -113,76 +111,164 @@ def main():
 
 
 def movement(player_position): # this function should be recursive
-    # if the player is at the top of the board
-    if player_position[0] == 0:
-        # the player can only go left or right
-        input('Choose a direction: 1 - left, 2 - right')
-        # if the player chooses to go left
-        if input == 1:
-            # the player goes left
-            player_position[1] -= 1
+    # Define all the possible movements based on the player position
+    if player_position == [0,0] or player_position == [1,0] or player_position == [2,0] or player_position == [3,0] or player_position == [4,0]:
+        # The player can only go right, down and downright
+        m_input = input('choose a direction: 1 - right, 2 - down, 3 - downright: ')
+        # If the player chooses to go right
+        if int(m_input) == 1:
+            # the player goes right
+            player_position[1] += 1
+            # generate a random event
+            generate_event(player_hp, player_weapon, player_armor, boss_hp)
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go down
+        elif m_input == 2:
+            # the player goes down
+            player_position[0] += 1
             # generate a random event
             generate_event()
+            # call the movement function
             return movement(player_position)
-        # if the player chooses to go right
-        elif input == 2:
+        # If the player chooses to go downright
+        elif m_input == 3:
+            # the player goes downright
+            player_position[0] += 1
+            player_position[1] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+    elif player_position == [0,1] or player_position == [1,1] or player_position == [2,1] or player_position == [3,1] or player_position == [4,1]:
+        # The player can only go right, down, downright and downleft
+        m_input = input('choose a direction: 1 - right, 2 - down, 3 - downright, 4 - downleft: ')
+        # If the player chooses to go right
+        if m_input == 1:
             # the player goes right
             player_position[1] += 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-    # if the player is at the bottom of the board
-    elif player_position[0] == 4:
-        # the player can only go left or right
-        input('Choose a direction: 1 - left, 2 - right')
-        # if the player chooses to go left
-        if input == 1:
-            # the player goes left
+        # If the player chooses to go down
+        elif m_input == 2:
+            # the player goes down
+            player_position[0] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downright
+        elif m_input == 3:
+            # the player goes downright
+            player_position[0] += 1
+            player_position[1] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downleft
+        elif m_input == 4:
+            # the player goes downleft
+            player_position[0] += 1
             player_position[1] -= 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-        # if the player chooses to go right
-        elif input == 2:
+    elif player_position == [0,2] or player_position == [1,2] or player_position == [2,2] or player_position == [3,2] or player_position == [4,2]:
+        # The player can only go right, down, downright, downleft and up
+        m_input = input('choose a direction: 1 - right, 2 - down, 3 - downright, 4 - downleft, 5 - up: ')
+        # If the player chooses to go right
+        if m_input == 1:
             # the player goes right
             player_position[1] += 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-    # if the player is not at the top or bottom of the board
-    else:
-        # the player can go up, left, right, upleft or upright
-        input('Choose a direction: 1 - up, 2 - left, 3 - right, 4 - upleft, 5 - upright')
-        # if the player chooses to go up
-        if input == 1:
+        # If the player chooses to go down
+        elif m_input == 2:
+            # the player goes down
+            player_position[0] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downright
+        elif m_input == 3:
+            # the player goes downright
+            player_position[0] += 1
+            player_position[1] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downleft
+        elif m_input == 4:
+            # the player goes downleft
+            player_position[0] += 1
+            player_position[1] -= 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go up
+        elif m_input == 5:
             # the player goes up
             player_position[0] -= 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-        # if the player chooses to go right
-        elif input == 3:
+    elif player_position == [0,3] or player_position == [1,3] or player_position == [2,3] or player_position == [3,3] or player_position == [4,3]:
+        # The player can only go right, down, downright, downleft, up and upright
+        m_input = input('choose a direction: 1 - right, 2 - down, 3 - downright, 4 - downleft, 5 - up, 6 - upright: ')
+        # If the player chooses to go right
+        if m_input == 1:
             # the player goes right
             player_position[1] += 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-        # if the player chooses to go upleft
-        elif input == 4:
-            # the player goes upleft
-            player_position[0] -= 1
+        # If the player chooses to go down
+        elif m_input == 2:
+            # the player goes down
+            player_position[0] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downright
+        elif m_input == 3:
+            # the player goes downright
+            player_position[0] += 1
+            player_position[1] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downleft
+        elif m_input == 4:
+            # the player goes downleft
+            player_position[0] += 1
             player_position[1] -= 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-        # if the player chooses to go upright
-        elif input == 5:
+        # If the player chooses to go up
+        elif m_input == 5:
+            # the player goes up
+            player_position[0] -= 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go upright
+        elif m_input == 6:
             # the player goes upright
             player_position[0] -= 1
             player_position[1] += 1
@@ -190,51 +276,99 @@ def movement(player_position): # this function should be recursive
             generate_event()
             # call the movement function
             return movement(player_position)
-        # if the player chooses to go left
-        elif input == 2:
-            # the player goes left
+    elif player_position == [0,4] or player_position == [1,4] or player_position == [2,4] or player_position == [3,4] or player_position == [4,4]:
+        # The player can only go down, downleft, up and upright
+        m_input = input('choose a direction: 1 - down, 2 - downleft, 3 - up, 4 - upright: ')
+        # If the player chooses to go down
+        if m_input == 1:
+            # the player goes down
+            player_position[0] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go downleft
+        elif m_input == 2:
+            # the player goes downleft
+            player_position[0] += 1
             player_position[1] -= 1
             # generate a random event
             generate_event()
             # call the movement function
             return movement(player_position)
-    return player_position
+        # If the player chooses to go up
+        elif m_input == 3:
+            # the player goes up
+            player_position[0] -= 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+        # If the player chooses to go upright
+        elif m_input == 4:
+            # the player goes upright
+            player_position[0] -= 1
+            player_position[1] += 1
+            # generate a random event
+            generate_event()
+            # call the movement function
+            return movement(player_position)
+    # If the player chooses to go back to the start of the stage
+    elif m_input == 5:
+        gb_input = input('Do you want to go back to the start of the stage? 1 - yes, 2 - no')
+        # If the player chooses to go back to the start of the stage
+        if gb_input == 1:
+            # the player goes back to the start of the stage
+            player_position = player_initial_position
+        # generate a random event
+        generate_event()
+        # call the movement function
+        return movement(player_position)
 
     
 
 
 
 
-def generate_event():
+def generate_event(player_hp, player_weapon, player_armor, boss_hp):
     # event is a random event from the event_dict
     event = random.choice(list(event_dict.keys()))
     # if the event is an enemy
     if event == 'enemy':
+        print('You found an enemy')
         # the player fights the enemy
         player_hp = fight_enemy(player_hp)
+        return player_hp
     # if the event is a weapon
     elif event == 'weapon':
+        print('You found a weapon')
         # the player gets the weapon
-        player_weapon = get_weapon(player_weapon)
+        player_weapon = get_weapon(player_weapon, player_hp)
+        return player_weapon
     # if the event is an armor
     elif event == 'armor':
+        print('You found an armor')
         # the player gets the armor
         player_armor = get_armor(player_armor)
+        return player_armor
     # if the event is nothing
     elif event == 'nothing':
+        print('You found nothing')
         # nothing happens
         pass
     elif event == 'boss':
         # Ask the player if he wants to fight the boss
-        input('Do you want to fight the boss? 1 - yes, 2 - no')
+        b_input = input('Do you want to fight the boss? 1 - yes, 2 - no')
         # if the player chooses to fight the boss
-        if input == 1:
+        if b_input == 1:
             # the player fights the boss
-            player_hp = fight_boss(player_hp)
+            player_hp = fight_boss(player_hp, boss_hp)
+            return player_hp
         # if the player chooses not to fight the boss
-        elif input == 2:
+        elif b_input == 2:
             # the player goes back to the last position
             player_position = player_position[0] - 1, player_position[1] - 1
+            return player_position
     return event
 
 
@@ -243,32 +377,36 @@ def generate_event():
 
 
 
-def fight_enemy(event):
+def fight_enemy(event, player_hp, boss_hp):
     if event == 'enemy':
         # if the player has more HP than the enemy
         if player_hp > event_dict['enemy']:
             # the player wins and gets the enemy's HP
             player_hp += event_dict['enemy']
+            print(f'You defeated the enemy and got {event_dict["enemy"]} HP')
             boss_hp += event_dict['enemy']
+            print(f'The boss has {boss_hp} HP now')
         # if the player has the same HP than the enemy
         elif player_hp == event_dict['enemy']:
             # the player wins and gets half of the enemy's HP rounded down
             player_hp += event_dict['enemy']//2
+            print(f'You defeated the enemy and got {event_dict["enemy"]//2} HP')
             boss_hp += event_dict['enemy']//2
+            print(f'The boss has {boss_hp} HP now')
         # if the player has less HP than the enemy
         elif player_hp < event_dict['enemy']:
             # the player loses and go back to the start of the stage
             player_hp = 0
+            print('You lost')
+    return player_hp
 
 
 
 
 
 
-def fight_boss(event):
+def fight_boss(event, player_hp, boss_hp):
     if event == 'boss':
-        # the boss has a HP that is the sum of the HP of the enemies of the stage minus the HP of the player
-        boss_hp = 0
         # if the player has more HP than the boss
         if player_hp > boss_hp:
             # the player wins and gets the boss's HP
@@ -281,6 +419,7 @@ def fight_boss(event):
         elif player_hp < boss_hp:
             # the player loses and go back to the start of the stage
             player_hp = 0
+    return player_hp
             
 
 
@@ -290,7 +429,7 @@ def fight_boss(event):
 
 
 
-def get_weapon(event):
+def get_weapon(event, player_hp, player_weapon):
     if event == 'weapon':
         # if the player gets a weapon, he gets the weapon's HP
         player_hp += event_dict['weapon']
@@ -310,7 +449,7 @@ def get_weapon(event):
 
 
 
-def get_armor(event):
+def get_armor(event, player_hp, player_armor):
     if event == 'armor':
         # if the player gets an armor, he gets the armor's HP
         player_hp += event_dict['armor']
@@ -335,4 +474,5 @@ def nothing(event):
         # nothing happens
         pass
     
+# Run the program
 main()
