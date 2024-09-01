@@ -1,5 +1,3 @@
-# WarriorPath.py
-
 import random
 import numpy as np
 import motion
@@ -9,9 +7,9 @@ from board import Board
 
 class WarriorPath:
     def __init__(self):
-        self.board = Board()
-        self.events = Events()
         self.motion = motion.Motion()  # Instanciando a classe Motion
+        self.board = Board()
+        self.events = Events(self.motion)  # Passando a instância de Motion para Events
         self.first_play = True
         self.reset_game()
 
@@ -69,9 +67,12 @@ class WarriorPath:
         event = self.board.get_event(position)  # Obter o evento baseado na posição
         if event == 0:
             print(self.motion.nothing_happens())  # Exibe a imagem de vento soprando quando nada acontece
+            print(self.motion.no_enc_desc())  # Exibe a mensagem de que não há inimigos por perto
         elif event == 1:
             print(self.motion.enemy_encounter())  # Exibe a imagem de olhos maliciosos ao encontrar um inimigo
-            self.player['HP'] = self.events.fight_enemy(self.player['HP'], self.player['weapon'], self.player['armor'])
+            self.player['HP'] = self.events.fight_enemy(
+                self.player['HP'], self.player['weapon'], self.player['armor']
+                )
             if self.player['HP'] > 20:
                 print("You feel a sense of foreboding... the enemies are becoming stronger as you gain power.")
         elif event == 2:
@@ -80,7 +81,7 @@ class WarriorPath:
             self.player['armor'] = self.events.get_armor(self.player['armor'], self.player['HP'])
         else:
             print(self.motion.nothing_happens())  # Exibe a imagem de vento soprando quando nada acontece
-
+            print(self.motion.no_enc_desc())  # Exibe a mensagem de que não há inimigos por perto
     def end_game(self):
         while True:
             restart = input("\nWould you like to restart the game? (yes/no): ").lower()
