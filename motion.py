@@ -220,3 +220,22 @@ class Motion:
             "You take a moment to rest and reflect, grateful for the chance to continue your journey."
         ]
         return random.choice(nothing_description)
+    def boss_intro(self):
+        boss_description = [
+            "A massive figure looms before you, its eyes filled with ancient wisdom and power.",
+            "The ground shakes as the boss approaches, its form wreathed in shadow and flame.",
+            "A legendary creature stands in your path, its presence commanding respect and fear.",
+            "The boss reveals itself, a being of immense strength and dark intent.",
+            "You face the final challenge, a foe unlike any you have encountered before.",
+            "The boss's eyes lock onto yours, a silent challenge passing between you."
+        ]
+        return random.choice(boss_description)
+
+    def boss_dodge_message(self):
+        boss_dodge = [
+            "The boss moves with unnatural speed, dodging your attack effortlessly.",
+            "You strike, but the boss's reflexes are too quick, and it evades your blow.",
+            "Your attack is swift and precise, but the boss anticipates your move and sidesteps it.",
+            "The boss's movements are fluid and graceful, allowing it to avoid your strike with ease."
+        ]
+        return random.choice(boss_dodge)
