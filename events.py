@@ -1,5 +1,3 @@
-#events.py
-
 import random
 import numpy as np
 import time

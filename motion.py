@@ -1,4 +1,3 @@
-# motion.py
 import random
 
 class Motion:

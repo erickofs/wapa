@@ -50,11 +50,7 @@ class WarriorPath:
                     self.game_over = True
                 continue
 
-            self.events.process_event(new_position)
-
-            # Pausa após qualquer evento (opcional)
-            # print("Press the arrow keys to move again after the event.")
-            # self.wait_for_next_move()
+            self.events.process_event(new_position)  # Processa o evento na nova posição
 
             if self.player.hp <= 0:
                 print(self.motion.game_over())  # Imprime a mensagem de "Game Over"
