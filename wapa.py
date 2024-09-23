@@ -1,87 +1,67 @@
 import random
 import numpy as np
-import motion
 import time
+import keyboard
 from events import Events
 from board import Board
+from movements import Movements
+from player import Player
+from motion import Motion
 
 class WarriorPath:
     def __init__(self):
-        self.motion = motion.Motion()  # Instanciando a classe Motion
+        self.motion = Motion()
         self.board = Board()
-        self.events = Events(self.motion)  # Passando a instância de Motion para Events
-        self.first_play = True
         self.reset_game()
-
-    def reset_game(self):
-        start_x = random.randint(0, 7)
-        start_y = random.randint(0, 7)
-        self.player = {'position': (start_x, start_y), 'HP': 10, 'weapon': 0, 'armor': 0}
-        self.boss_position = (random.randint(0, 7), random.randint(0, 7))  # Posição aleatória do boss
+        self.movements = Movements(self.player)
+        self.events = Events(self.player, self.board)
+        self.first_play = True
         self.game_over = False
-
-    def display_introduction(self):
-        intro_text = self.motion.intro_text()
-        for line in intro_text.split('\n'):
-            print(line)
-            time.sleep(0.05)  # Breve pausa para efeito dramático
-
-    def display_revived_message(self):
-        revived_text = self.motion.revived_text()
-        for line in revived_text.split('\n'):
-            print(line)
-            time.sleep(0.05)  # Breve pausa para efeito dramático
 
     def start_game(self):
         if self.first_play:
-            self.display_introduction()
+            self.events.display_introduction()
             self.first_play = False
+            self.game_over = False
         else:
-            self.display_revived_message()
+            self.events.display_revived_message()
+            self.game_over = False
 
         self.board.create_board()
         while not self.game_over:
-            print(f"\nCurrent position: {self.player['position']}")
-            print(f"Current HP: {self.player['HP']}, Weapon: {self.player['weapon']}, Armor: {self.player['armor']}")
-            direction = input("Choose a direction (north, south, east, west): ").lower()
-            if direction in ['north', 'south', 'east', 'west']:
-                new_position = self.board.move(direction, self.player['position'])
-                if new_position != self.player['position']:
-                    self.player['position'] = new_position
-                    if new_position == self.boss_position:
-                        print("You have found the boss!")
-                        self.player['HP'] = self.events.fight_boss(self.player['HP'], self.player['weapon'], self.player['armor'])
-                        if self.player['HP'] <= 0:
-                            self.game_over = True
-                    else:
-                        self.process_event(new_position)
-                if self.player['HP'] <= 0:
-                    print(self.motion.game_over())  # Exibe a imagem de Game Over
+            print(f"\nCurrent position: {self.player.position}")
+            print(f"Current Status: HP: {self.player.hp}, Weapon: {self.player.weapon}, Armor: {self.player.armor}")
+            print("Press the arrow keys to move.")
+
+            direction = self.movements.key_listener()  # Obtém a direção do jogador
+            current_position = self.player.position  # Salva a posição atual
+            new_position = self.movements.move(direction)  # Calcula a nova posição
+
+            if new_position == current_position:
+                print("You cannot move in that direction. Try a different move.")
+                continue  # Pede uma nova entrada ao jogador
+
+            self.player.position = new_position  # Atualiza a posição do jogador
+
+            if new_position == self.board.boss_position:
+                print("You have found the boss!")
+                self.player.hp = self.events.fight_boss(self.player.hp, self.player.weapon, self.player.armor)
+                if self.player.hp <= 0:
                     self.game_over = True
-            else:
-                print("Invalid direction. Please choose 'north', 'south', 'east', or 'west'.")
+                continue
+
+            self.events.process_event(new_position)
+
+            # Pausa após qualquer evento (opcional)
+            # print("Press the arrow keys to move again after the event.")
+            # self.wait_for_next_move()
+
+            if self.player.hp <= 0:
+                print(self.motion.game_over())  # Imprime a mensagem de "Game Over"
+                self.game_over = True
 
         self.end_game()
 
-    def process_event(self, position):
-        event = self.board.get_event(position)  # Obter o evento baseado na posição
-        if event == 0:
-            print(self.motion.nothing_happens())  # Exibe a imagem de vento soprando quando nada acontece
-            print(self.motion.no_enc_desc())  # Exibe a mensagem de que não há inimigos por perto
-        elif event == 1:
-            print(self.motion.enemy_encounter())  # Exibe a imagem de olhos maliciosos ao encontrar um inimigo
-            self.player['HP'] = self.events.fight_enemy(
-                self.player['HP'], self.player['weapon'], self.player['armor']
-                )
-            if self.player['HP'] > 20:
-                print("You feel a sense of foreboding... the enemies are becoming stronger as you gain power.")
-        elif event == 2:
-            self.player['weapon'] = self.events.get_weapon(self.player['weapon'], self.player['HP'])
-        elif event == 3:
-            self.player['armor'] = self.events.get_armor(self.player['armor'], self.player['HP'])
-        else:
-            print(self.motion.nothing_happens())  # Exibe a imagem de vento soprando quando nada acontece
-            print(self.motion.no_enc_desc())  # Exibe a mensagem de que não há inimigos por perto
     def end_game(self):
         while True:
             restart = input("\nWould you like to restart the game? (yes/no): ").lower()
@@ -94,6 +74,12 @@ class WarriorPath:
                 break
             else:
                 print("Invalid input. Please type 'yes' or 'no'.")
+
+    def reset_game(self):
+        start_x = random.randint(0, 7)
+        start_y = random.randint(0, 7)
+        self.player = Player(start_x, start_y)
+        print(f"Player starting position: {self.player.position}")
 
 if __name__ == "__main__":
     game = WarriorPath()
