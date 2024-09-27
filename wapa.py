@@ -1,6 +1,6 @@
 from game_state import Gamestate
 
-class WarriorPath:
+class WarriorPath():
     pass
 
 if __name__ == "__main__":
