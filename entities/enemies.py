@@ -1,5 +1,5 @@
 import random
-from player import Player
+from entities.player import Player
 
 class Enemy:
     def __init__(self, player):
@@ -22,4 +22,4 @@ class Enemy:
 
         return enemy_hp
     
-    
+

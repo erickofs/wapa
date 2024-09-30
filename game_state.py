@@ -5,7 +5,7 @@ import keyboard
 from events import Events
 from board import Board
 from movements import Movements
-from player import Player
+from entities.player import Player
 from motion import Motion
 
 class Gamestate():
