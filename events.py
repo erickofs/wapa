@@ -29,26 +29,6 @@ class Events:
         else:
             print(self.motion.nothing_happens())
 
-    def calculate_damage(self, player_hp, player_weapon):
-        damage = random.randint(int(0.1 * player_hp), int(0.5 * player_hp)) + player_weapon
-        return damage
-
-    def calculate_enemy_attack(self, enemy_hp):
-        damage = random.randint(int(0.1 * enemy_hp), int(0.5 * enemy_hp))
-        return damage
-
-    def calculate_defense(self, player_hp, player_armor):
-        hp_defense = random.randint(int(0.1 * player_hp), int(0.3 * player_hp))
-        armor_defense = random.randint(int(0.5 * player_armor), int(0.75 * player_armor))
-        return hp_defense + armor_defense
-
-    def critical_hit_possible(self, player_hp, player_weapon, damage_to_enemy):
-        if player_weapon > 0 and player_hp < 0.2 * player_weapon:
-            return False
-
-        crit_probability = np.percentile(range(int(0.1 * player_hp), int(0.5 * player_hp) + player_weapon + 1), 90)
-        return player_weapon == 0 and crit_probability >= 50
-
     def fight_enemy(self, player_hp, player_weapon, player_armor):
         max_hp = 100
         probability = max(0.6, min(0.95, player_hp / max_hp))
@@ -155,29 +135,7 @@ class Events:
             
             return player_hp
 
-    def get_weapon(self, player_weapon, player_hp):
-        max_weapon_quality = max(2, int(0.2 * player_hp))  
-        weapon_quality = random.randint(1, max_weapon_quality)
-        print(self.motion.wea_enc_desc())
 
-        if player_weapon == 0 or weapon_quality > player_weapon:
-            print(f"You upgrade your weapon from power {player_weapon} to {weapon_quality}.")
-            return weapon_quality
-        else:
-            print("You leave the weapon behind.")
-            return player_weapon
-
-    def get_armor(self, player_armor, player_hp):
-        max_armor_quality = max(2, int(0.2 * player_hp))
-        armor_quality = random.randint(1, max_armor_quality)
-        print(self.motion.arm_enc_desc())
-
-        if player_armor == 0 or armor_quality > player_armor:
-            print(f"You upgrade your armor from quality {player_armor} to {armor_quality}.")
-            return armor_quality
-        else:
-            print("You leave the armor behind.")
-            return player_armor
 
     def display_introduction(self):
         intro_text = self.motion.intro_text()

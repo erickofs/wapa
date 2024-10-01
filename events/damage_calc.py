@@ -1,13 +1,11 @@
 import random
 import numpy as np
-from 
-
 
 class DamageCalc:
     def __init__(self):
         pass
 
-    def calculate_damage(self, player_hp, player_weapon):
+    def calculate_player_attack(self, player_hp, player_weapon):
         damage = random.randint(int(0.1 * player_hp), int(0.5 * player_hp)) + player_weapon
         return damage
 
