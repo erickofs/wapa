@@ -2,7 +2,7 @@ import random
 import numpy as np
 import time
 from motion import Motion
-from board import Board
+from board.board import Board
 
 class Events:
     def __init__(self, player, board):

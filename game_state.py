@@ -3,7 +3,7 @@ import numpy as np
 import time
 import keyboard
 from events import Events
-from board import Board
+from board.board import Board
 from movements import Movements
 from entities.player import Player
 from motion import Motion
