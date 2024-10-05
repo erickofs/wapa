@@ -1,10 +1,42 @@
 import numpy as np
 import random
 
-class Board:
-    def __init__(self):
-        # A board with method zeros, containing a shape of 8x8 with data type (dtype) int
-        # This will return int blocks (1x1, 1x2, 1x3, etc)
-        self.blocks = np.zeros((8, 8), dtype=int)
-
+class Block():
+    def __init__(self, position):
+        self.position = position  # Por exemplo, uma tupla (x, y)
+        self.events = []       # Lista de eventos ocorridos no bloco
     
+    def add_event(self, event):
+        self.events.append(event)
+    
+    def __repr__(self):
+        return f"Bloco(posicao={self.position})"
+
+class Board:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.blocks = self.create_blocks()
+    
+    def create_blocks(self):
+        blocks = []
+        for y in range(self.height):
+            line = []
+            for x in range(self.width):
+                block = Block(position=(x, y))
+                line.append(block)
+            blocks.append(line)
+        return blocks
+    
+    def get_block(self, x, y):
+        return self.blocks[y][x]
+    
+    def __repr__(self):
+        return f"Tabuleiro({self.width}x{self.height})"
+
+
+tabuleiro = Board(width=5, height=5)
+print(tabuleiro)
+rain = RainEvent()
+block = tabuleiro.get_block(2, 2)
+rain.execute(block)
