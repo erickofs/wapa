@@ -34,9 +34,3 @@ class Board:
     def __repr__(self):
         return f"Tabuleiro({self.width}x{self.height})"
 
-
-tabuleiro = Board(width=5, height=5)
-print(tabuleiro)
-rain = RainEvent()
-block = tabuleiro.get_block(2, 2)
-rain.execute(block)
