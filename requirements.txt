@@ -1,2 +1,6 @@
 numpy
 keyboard
+pytest
+pytest-cov
+black
+flake8

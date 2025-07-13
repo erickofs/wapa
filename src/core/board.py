@@ -1,16 +1,7 @@
 import numpy as np
 import random
 
-class Block():
-    def __init__(self, position):
-        self.position = position  # Por exemplo, uma tupla (x, y)
-        self.events = []       # Lista de eventos ocorridos no bloco
-    
-    def add_event(self, event):
-        self.events.append(event)
-    
-    def __repr__(self):
-        return f"Bloco(posicao={self.position})"
+from src.core.block import Block
 
 class Board:
     def __init__(self, width, height):

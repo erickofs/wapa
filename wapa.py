@@ -1,4 +1,4 @@
-from game_state import Gamestate
+from src.core.game_state import Gamestate
 
 class WarriorPath():
     pass

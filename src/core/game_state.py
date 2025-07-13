@@ -2,11 +2,11 @@ import random
 import numpy as np
 import time
 import keyboard
-from events import Events
-from board.board import Board
-from movements import Movements
-from entities.player import Player
-from motion import Motion
+from src.events import Events
+from src.core.board import Board
+from src.mechanics.movements import Movements
+from src.entities.player import Player
+from src.ui.motion import Motion
 
 class Gamestate():
 

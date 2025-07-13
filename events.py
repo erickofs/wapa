@@ -3,6 +3,10 @@ import numpy as np
 import time
 from motion import Motion
 from board.board import Board
+from utils.enums import EventType
+from utils.exceptions import InvalidActionError
+from utils.logger import logger
+from src.mechanics.damage_calc import DamageCalc
 
 class Events:
     def __init__(self, player, board):
@@ -11,23 +15,38 @@ class Events:
         self.player = player
 
     def process_event(self, position):
-        event = self.board.get_event(position)
-        self.board.mark_position_explored(position)
+        """
+        Processa um evento na posição dada.
+        
+        Args:
+            position (tuple): Coordenadas (x, y) da posição
+            
+        Raises:
+            InvalidActionError: Se uma ação inválida for tentada
+        """
+        try:
+            event = EventType.from_int(self.board.get_event(position))
+            self.board.mark_position_explored(position)
+            logger.info(f"Processing event {event} at position {position}")
 
-        if event == 0:
-            print(self.motion.nothing_happens())
-            print(self.motion.no_enc_desc())
-        elif event == 1:
-            print(self.motion.enemy_encounter()) 
-            self.player.hp = self.fight_enemy(self.player.hp, self.player.weapon, self.player.armor)
-            if self.player.hp > 20:
-                print("You feel a sense of foreboding... the enemies are becoming stronger as you gain power.")
-        elif event == 2:
-            self.player.weapon = self.get_weapon(self.player.weapon, self.player.hp)
-        elif event == 3:
-            self.player.armor = self.get_armor(self.player.armor, self.player.hp)
-        else:
-            print(self.motion.nothing_happens())
+            if event == EventType.NOTHING:
+                print(self.motion.nothing_happens())
+                print(self.motion.no_enc_desc())
+            elif event == EventType.ENEMY:
+                print(self.motion.enemy_encounter()) 
+                self.player.hp = self.fight_enemy(self.player.hp, self.player.weapon, self.player.armor)
+                if self.player.hp > 20:
+                    logger.info("Player growing stronger, enemies will be tougher")
+                    print("You feel a sense of foreboding... the enemies are becoming stronger as you gain power.")
+            elif event == EventType.WEAPON:
+                self.player.weapon = self.get_weapon(self.player.weapon, self.player.hp)
+            elif event == EventType.ARMOR:
+                self.player.armor = self.get_armor(self.player.armor, self.player.hp)
+            else:
+                print(self.motion.nothing_happens())
+        except Exception as e:
+            logger.error(f"Error processing event: {str(e)}")
+            raise
 
     def fight_enemy(self, player_hp, player_weapon, player_armor):
         max_hp = 100
